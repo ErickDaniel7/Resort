@@ -1,4 +1,3 @@
-Sistema de Controle de Vendas em Português
 ## Controle de reservas de um resort
 
 #### Construindo o Projeto
