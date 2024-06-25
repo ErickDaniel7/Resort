@@ -1,0 +1,118 @@
+
+:root {
+    /* Tema claro */
+    --cor-fundo-claro: #fff;
+    --cor-texto-claro: #333;
+    --cor-texto-secundario-claro:#6c757d;
+    --cor-realce-claro: #007bff;
+    --cor-secundaria-claro: #6c757d;
+
+
+    /* Tema escuro */
+    --cor-fundo-escuro: rgb(67, 68, 70);
+    --cor-texto-escuro: #fff;
+    --cor-texto-secundario-escuro: rgb(227, 233, 238);
+    --cor-realce-escuro: rgb(223, 228, 233);
+    --cor-secundaria-escuro: #343a40;
+}
+
+
+.label__input {
+    margin: 15px 0 0 0;
+    font-size: 14px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.btn{
+    min-width: 100px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-color: #eff0f5;
+}
+
+[data-bs-theme="dark"] {
+    .card {
+        background-color: var(--cor-fundo-escuro);
+        color: var(--cor-texto-escuro);
+        gap:5px;
+    }
+
+    .navbar {
+        background-color: var(--cor-fundo-escuro);
+        padding: 10px;
+    }
+    .nav-link.active {
+        color: var(--cor-texto-escuro);
+        font-weight: 500;
+    }
+    .nav-link {
+        color: var(--cor-texto-secundario-escuro)
+    }
+    .nav-link:hover {
+        color : var(--cor-texto-escuro);
+    }
+    .page-item {
+        background-color: var(--cor-fundo-escuro);
+        color: var(--cor-texto-escuro);
+    }
+    table {
+        color: rgb(237, 238, 243)
+    }
+    tr:hover{
+        background-color: var(--cor-secundaria-escuro);
+        color: var(--cor-texto-escuro);
+    }
+    #tabelaUsuario tr.selected {
+        background-color: var(--cor-realce-escuro);
+        color: #222;
+    }
+    body {
+        background-color: #333;
+        color:#fff;
+    }
+
+  }
+
+  [data-bs-theme="light"] {
+
+    .card {
+        background-color: var(--cor-fundo-claro);
+        color: var(--cor-texto-claro);
+        gap:5px
+    }
+    .navbar {
+        background-color: var(--cor-fundo-claro);
+        padding: 10px;
+    }
+    .nav-link.active {
+        color: var(--cor-texto-claro);
+        font-weight: 500;
+    }
+    .nav-link {
+        color: var(--cor-texto-secundario-claro)
+    }
+    .nav-link:hover {
+        color : var(--cor-realce-claro);
+    }
+
+    table {
+        color: var(--cor-texto-claro)
+    }
+    tr:hover{
+        background-color: var( --cor-secundaria-escuro);
+        color: var(--cor-texto-escuro);
+        cursor:pointer
+    }
+    #tabelaUsuario tr.selected {
+        background-color: var(--cor-realce-claro);
+        color: var(--cor-fundo-claro);
+    }
+    body {
+        background-color: rgb(228, 230, 243);
+    }
+  }

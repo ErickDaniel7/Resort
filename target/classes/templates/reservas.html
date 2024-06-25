@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <title>Controle de Reservas</title>
+    <meta charset="UTF-8">
+    <!-- Adicionando Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body style="background-color:light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">RESORT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/quarto">Quartos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/hospede">Hóspedes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/reserva">Reservas</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+<div class="main">
+    <section>
+        <div class="row ml-4 mt-4 mb-0">
+            <h3 class="ml-3">CONTROLE DE RESERVAS</h3>
+        </div>
+        <hr>
+        <div class="row col-12 d-flex justify-content-between ml-1 mb-0">
+            <div class="d-flex">
+                <button class="btn btn-secondary ml-3" style="height:40px; margin:0" data-toggle="modal"
+                        data-target="#novaReservaModal"> Nova Reserva
+                </button>
+            </div>
+            <div class="d-flex">
+
+                <div class="d-flex">
+                    <div class="form-group mr-1">
+                        <input type="text" id="idReservaFiltro" name="idReservaFiltro" class="form-control filtrar"
+                               placeholder="Filtrar por ID" aria-describedby="idReservaFiltro" style="height:41px">
+
+                    </div>
+                    <button class="btn btn-secondary mr-4" style="height:40px;" id="filtroButton"> Filtrar</button>
+                </div>
+
+                <div class="d-flex">
+                    <div class="form-group mr-1">
+                        <input type="text" id="hospedeFiltro" name="hospedeFiltro" class="form-control filtrar"
+                               placeholder="Filtrar por Hospede" aria-describedby="hospedeFiltro" style="height:41px">
+
+                    </div>
+                    <button class="btn btn-secondary mr-4" style="height:40px;" id="filtroHospedeButton"> Filtrar
+                    </button>
+                </div>
+
+                <div class="d-flex">
+                    <div class="form-group mr-1">
+                        <input type="date" id="dataCheckinFiltro" name="checkinFiltro" class="form-control filtrar"
+                               placeholder="Filtrar por Data de Checkin" aria-describedby="dataCheckinFiltro"
+                               style="height:41px">
+
+                    </div>
+                    <button class="btn btn-secondary mr-4" style="height:40px;" id="filtroCheckinButton"> Filtrar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mt-0 ml-4 mr-4">
+            <div class="col-lg-12  mt-2">
+                <div class="card p-4" style="height: 600px; overflow-y: auto;">
+                    <table class="table" id="tabelaReservas">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hospede</th>
+                            <th>CPF</th>
+                            <th>Quarto</th>
+                            <th>Data de Entrada</th>
+                            <th>Data de Saída</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="reserva : ${reservas}">
+                            <td th:text="${reserva.id}"></td>
+                            <td th:text="${reserva.hospede.nome}" th:attr="data-hospede-id=${reserva.hospede.id}"></td>
+                            <td th:text="${reserva.hospede.cpf}"></td>
+                            <td th:text="${reserva.quarto.nome}" th:attr="data-quarto-id=${reserva.quarto.id}"></td>
+                            <td th:text="${reserva.dataEntrada}"></td>
+                            <td th:text="${reserva.dataSaida}"></td>
+                            <td th:text="${reserva.status}"></td>
+                            <td>
+                                <button class="btn btn-primary checkin">CHECK-IN</button>
+                                <button class="btn btn-success checkout">CHECK-OUT</button>
+                                <button class="btn btn-danger cancelar">CANCELAR</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="novaReservaModal" tabindex="-1" role="dialog" aria-labelledby="novaReservaModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="novaReservaModalLabel">Nova Reserva</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formularioReserva" method="post">
+                    <input type="hidden" id="id" name="id" class="form-control">
+                    <input type="hidden" id="idQuarto" name="idQuarto" class="form-control">
+
+                    <div class="form-group">
+                        <label for="nomeHospede">Registro ID do Hospede: </label>
+                        <input type="text" id="idHospede" name="idHospede" class="form-control"
+                               aria-describedby="idHospede">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nomeHospede">Hospede</label>
+                        <input type="text" id="nomeHospede" name="nomeHospede" class="form-control"
+                               aria-describedby="nomeHospede" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataEntrada" class="label__input">Data de entrada:</label>
+                        <input type="date" id="dataEntrada" name="dataEntrada" class="form-control"
+                               aria-describedby="dataEntrada">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataSaida" class="label__input">Data de Saída:</label>
+                        <input type="date" id="dataSaida" name="dataSaida" class="form-control"
+                               aria-describedby="dataSaida">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="listaQuarto">Quarto Disponível no período</label>
+                        <select class="form-control" id="listaQuarto" name="idQuarto">
+                            <option value="">Selecione um quarto</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valorTotal">Valor de Estadia</label>
+                        <input type="text" class="form-control" id="valorTotal" name="valorTotal" disabled/>
+
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100 mb-1">Registrar</button>
+                        <!--                        <button type="button" class="btn btn-danger w-100">Excluir</button>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para Check-in -->
+<div class="modal fade" id="checkinModal" tabindex="-1" role="dialog" aria-labelledby="checkinModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkinModalLabel">Check-in</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Você deseja realmente realizar o check-in da reserva <span id="checkinReservaId"></span>?</p>
+                <button type="button" class="btn btn-primary" id="confirmCheckin">Confirmar Check-in</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Check-out -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkoutModalLabel">Check-out</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Você deseja realmente realizar o check-out da reserva <span id="checkoutReservaId"></span>?</p>
+                <button type="button" class="btn btn-primary" id="confirmCheckout">Confirmar Check-out</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Cancelar Reserva -->
+<div class="modal fade" id="cancelarModal" tabindex="-1" role="dialog" aria-labelledby="cancelarModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelarModalLabel">Cancelar Reserva</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Você deseja realmente cancelar a reserva <span id="cancelarReservaId"></span>?</p>
+                <button type="button" class="btn btn-primary" id="confirmCancelar">Confirmar Cancelamento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Adicionando scripts do Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Variáveis para armazenar o ID da reserva selecionada
+        let selectedReservaId = null;
+
+        //Funcionalidade de filtragem por id
+        const idReservaFiltroInput = document.getElementById('idReservaFiltro');
+
+        document.getElementById('filtroButton').addEventListener('click', function() {
+            const filtroId = idReservaFiltroInput.value.trim();
+            let url = filtroId ? `/resort/reserva/filtro/${filtroId}` : `/resort/reserva`;
+            window.location.href = url;
+        });
+
+
+        //Funcionalidade de filtragem por hospede
+        const hospedeReservaFiltroInput = document.getElementById('hospedeFiltro');
+
+        document.getElementById('filtroHospedeButton').addEventListener('click', function() {
+            const hospede = hospedeReservaFiltroInput.value.trim();
+
+            let url = hospede ? `/resort/reserva/hospede/${hospede}` : `/resort/reserva`;
+            window.location.href = url;
+            console.log(hospede)
+            console.log(url)
+        });
+
+         //Funcionalidade de filtragem por checkin
+        const checkinReservaFiltroInput = document.getElementById('dataCheckinFiltro');
+
+        document.getElementById('filtroCheckinButton').addEventListener('click', function() {
+            const checkin = checkinReservaFiltroInput.value.trim();
+            let url = checkin ? `/resort/reserva/checkin/${checkin}` : `/resort/reserva`;
+            window.location.href = url;
+        });
+
+
+        // Função para abrir o modal de check-in
+        document.querySelectorAll('.checkin').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const status = row.querySelector('td:nth-child(7)').textContent.trim();
+                if (status === 'PENDENTE') {
+                    selectedReservaId = row.querySelector('td:nth-child(1)').textContent.trim();
+                    document.getElementById('checkinReservaId').textContent = selectedReservaId;
+                    $('#checkinModal').modal('show');
+                } else {
+                    alert('Check-in só pode ser feito se a reserva estiver pendente.');
+                }
+            });
+        });
+
+        // Função para confirmar o check-in
+        document.getElementById('confirmCheckin').addEventListener('click', async function() {
+            if (selectedReservaId) {
+                try {
+                    const response = await fetch(`/resort/reserva/${selectedReservaId}/checkin`, {
+                        method: 'POST'
+                    });
+                    if (response.ok) {
+                        alert('Check-in realizado com sucesso!');
+                        limparFormulario();
+                        location.reload();  // Recarrega a página para atualizar a lista de reservas
+                    } else {
+                        alert('Erro ao realizar check-in.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar check-in:', error);
+                }
+            }
+        });
+
+        // Função para abrir o modal de check-out
+        document.querySelectorAll('.checkout').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const status = row.querySelector('td:nth-child(7)').textContent.trim();
+                if (status === 'ABERTO') {
+                    selectedReservaId = row.querySelector('td:nth-child(1)').textContent.trim();
+                    document.getElementById('checkoutReservaId').textContent = selectedReservaId;
+                    $('#checkoutModal').modal('show');
+                } else {
+                    alert('Check-out só pode ser feito se a reserva estiver aberta.');
+                }
+            });
+        });
+
+        // Função para confirmar o check-out
+        document.getElementById('confirmCheckout').addEventListener('click', async function() {
+            if (selectedReservaId) {
+                try {
+                    const response = await fetch(`/resort/reserva/${selectedReservaId}/checkout`, {
+                        method: 'POST'
+                    });
+                    if (response.ok) {
+                        alert('Check-out realizado com sucesso!');
+                        limparFormulario();
+                        location.reload();  // Recarrega a página para atualizar a lista de reservas
+                    } else {
+                        alert('Erro ao realizar check-out.' + error.message);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar check-out:', error.message);
+                }
+            }
+        });
+
+        // Função para abrir o modal de cancelamento
+        document.querySelectorAll('.cancelar').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                selectedReservaId = row.querySelector('td:nth-child(1)').textContent.trim();
+                document.getElementById('cancelarReservaId').textContent = selectedReservaId;
+                $('#cancelarModal').modal('show');
+            });
+        });
+
+        // Função para confirmar o cancelamento
+        document.getElementById('confirmCancelar').addEventListener('click', async function() {
+            if (selectedReservaId) {
+                try {
+                    const response = await fetch(`/resort/reserva/${selectedReservaId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+
+                        alert('Reserva cancelada com sucesso!');
+                        location.reload();  // Recarrega a página para atualizar a lista de reservas
+                    } else {
+                        alert('Erro ao cancelar a reserva.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao cancelar a reserva:', error);
+                }
+            }
+        });
+
+        function limparFormulario() {
+            document.getElementById('id').value = '';
+            document.getElementById('idHospede').value = '';
+            document.getElementById('nomeHospede').value = '';
+            document.getElementById('dataEntrada').value = '';
+            document.getElementById('dataSaida').value = '';
+            document.getElementById('listaQuarto').innerHTML = '';
+            document.getElementById('idQuarto').value = '';
+    }
+
+    // Limpa o formulário ao fechar o modal
+    $('#novaReservaModal').on('hidden.bs.modal', function() {
+        limparFormulario();
+    });
+
+    
+
+    // Limpa o formulário ao clicar em "Registrar"
+    document.getElementById('registrar').addEventListener('click', function() {
+        limparFormulario();
+        $('#novaReservaModal').modal('hide');
+    });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const dataEntradaInput = document.getElementById('dataEntrada');
+    const dataSaidaInput = document.getElementById('dataSaida');
+    const listaQuartoSelect = document.getElementById('listaQuarto');
+    const valorTotalInput = document.getElementById('valorTotal');
+    const idQuartoInput = document.getElementById('idQuarto'); // Campo oculto para armazenar o ID do quarto
+
+    dataSaidaInput.addEventListener('blur', async function() {
+        const dataEntrada = dataEntradaInput.value;
+        const dataSaida = this.value;
+
+        if (dataEntrada && dataSaida) {
+            try {
+                const response = await fetch(`/resort/quarto/ocupacao/inicio/${dataEntrada}/fim/${dataSaida}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const quartos = await response.json();
+                    console.log(quartos);
+                    listaQuartoSelect.innerHTML = '<option value="">Selecione um quarto</option>'; // Clear the select options
+                    quartos.forEach(quarto => {
+                        const option = document.createElement('option');
+                        option.value = JSON.stringify(quarto); // Store the whole quarto object as a JSON string
+                        option.textContent = quarto.nome;
+                        listaQuartoSelect.appendChild(option);
+                    });
+                } else {
+                    console.error("Erro ao buscar quartos disponíveis:", response.status);
+                    alert("Falha ao buscar quartos disponíveis!");
+                }
+            } catch (error) {
+                console.error("Erro na consulta de quartos:", error);
+                alert("Falha ao buscar quartos disponíveis!");
+            }
+        } else {
+            listaQuartoSelect.innerHTML = '<option value="">Selecione um quarto</option>'; // Clear the select options
+        }
+    });
+
+    listaQuartoSelect.addEventListener('change', function() {
+        const selectedQuarto = JSON.parse(this.value); // Parse the JSON string back to an object
+        const valorDiaria = selectedQuarto.valorDia; // Get the valorDiaria
+
+        const dataEntrada = new Date(dataEntradaInput.value);
+        const dataSaida = new Date(dataSaidaInput.value);
+
+        if (dataEntrada && dataSaida) {
+            const timeDiff = Math.abs(dataSaida.getTime() - dataEntrada.getTime());
+            const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+            const valorTotal = valorDiaria * diffDays;
+
+            valorTotalInput.value = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        idQuarto.value = selectedQuarto.id; // Armazena o ID do quarto selecionado
+    });
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const idHospedeInput = document.getElementById('idHospede');
+    const nomeHospedeInput = document.getElementById('nomeHospede');
+
+    idHospedeInput.addEventListener('blur', async function() {
+        const hospedeId = this.value;
+
+        if (hospedeId) {
+            const response = await fetch('/resort/hospede/' + hospedeId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const hospede = await response.json(); // Get response as JSON
+                console.log(hospede)
+                nomeHospede.value = hospede.nome; // Set the value of the input field
+            } else {
+                console.error("Erro ao buscar hóspede:", response.status);
+                alert("Falha ao buscar hóspede!");
+                nomeHospede.value = ""; // Clear the input field if fetch fails
+            }
+        } else {
+            nomeHospedeInput.value = ""; // Clear the input field if no ID is provided
+        }
+    });
+});
+</script>
+<script>
+    document.getElementById('tabelaReservas').addEventListener('click', function(event) {
+        const linha = event.target.closest('tr');
+        if (!linha || linha.parentElement.tagName !== 'TBODY') return;
+
+        const celulas = linha.querySelectorAll('td');
+
+        if (celulas.length < 6) return;
+
+        const [id, nome, descricao, vistaMar, valorDia, capacidade, status] = celulas;
+
+        document.getElementById('id').value = id.textContent.trim();
+        document.getElementById('nome').value = nome.textContent.trim();
+        document.getElementById('descricao').value = descricao.textContent.trim()
+        document.getElementById('valorDia').value = valorDia.textContent.trim();
+        document.getElementById('capacidade').value = capacidade.textContent.trim();
+        document.getElementById('vistaMar').checked = vistaMar.textContent.trim().toLowerCase() === 'true';
+        document.querySelectorAll('tr').forEach(row => row.classList.remove('selected'));
+        linha.classList.add('selected');
+    });
+</script>
+<script>
+    // Existing code for table click event listener...
+
+    // Add click event listener for the "Excluir" button
+    const deleteButton = document.querySelector('.btn-danger');
+    deleteButton.addEventListener('click', function() {
+      const id = document.getElementById('id').value;
+
+      if (id) {  // Check if an ID is selected
+        fetch(`/resort/reserva/${id}`, {  // Use the DELETE endpoint with the ID
+          method: 'DELETE'
+        })
+        .then(response => {
+          if (response.ok) { // Check for successful deletion (204 No Content)
+            // Update UI to reflect the deletion (e.g., remove the selected row)
+            const selectedRow = document.querySelector('.selected');
+            if (selectedRow) {
+              selectedRow.parentNode.removeChild(selectedRow);
+            }
+            console.log('reserva excluído com sucesso!');
+          } else {
+            console.error('Erro ao excluir reserva!');
+          }
+        })
+        .catch(error => {
+          console.error('Erro na requisição:', error);
+        });
+      } else {
+        console.error('Selecione um reserva para excluir!');
+      }
+    });
+</script>
+</body>
+</html>

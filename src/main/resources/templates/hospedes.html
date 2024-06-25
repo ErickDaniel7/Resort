@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <title>Cadastro de hospedes</title>
+    <meta charset="UTF-8">
+    <!-- Adicionando Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body style="background-color:light">
+<div class="main">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">RESORT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/quarto">Quartos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/hospede">Hóspedes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resort/reserva">Reservas</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <section>
+        <div class="row ml-4 mt-4 mb-0">
+            <h3 class="ml-3">Controle de Hóspedes</h3>
+        </div>
+        <hr>
+        <div class="row col-12 d-flex justify-content-end ml-1 mb-0">
+            <div class="d-flex">
+                <div class="d-flex">
+                    <div class="form-group mr-1">
+                        <input type="text" id="idHospedeFiltro" name="idHospedeFiltro" class="form-control filtrar"
+                               placeholder="Filtrar por ID" aria-describedby="idHospedeFiltro" style="height:41px">
+
+                    </div>
+                    <button class="btn btn-secondary mr-4" style="height:40px;" id="filtroButton"> Filtrar</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-0 ml-4 mr-4">
+            <div class="col-lg-3 col-md-12 mt-2" >
+                <div class="card p-4 " >
+                    <form id="formulariohospede"  method="post">
+                        <input type="hidden" id="id" name="id" class="form-control" >
+
+                        <div class="form-group">
+                            <label for="nome" class="label__input">Nome:</label>
+                            <input type="text" id="nome" name="nome" class="form-control"  aria-describedby="nome">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone" class="label__input">Telefone:</label>
+                            <input type="text" id="telefone" name="telefone" class="form-control"  aria-describedby="telefone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf" class="label__input">CPF:</label>
+                            <input type="text" id="cpf" name="cpf" class="form-control"  aria-describedby="cpf">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rg" class="label__input">RG:</label>
+                            <input type="text" id="rg" name="rg" class="form-control" aria-describedby="rg">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dataNascimento" class="label__input">Data de Nascimento:</label>
+                            <input type="date" id="dataNascimento" name="dataNascimento" class="form-control" aria-describedby="dataNascimento">
+                        </div>
+
+
+                        <hr/>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary w-100 mb-1">Salvar</button>
+                            <button type="button" class="btn btn-danger w-100">Excluir</button>
+                            <button type="button" class="btn btn-secondary w-100 mt-1 clean-field">Limpar Campos</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-12 mt-2">
+                <div class="card p-4" style="height: 600px; overflow-y: auto;">
+                    <table class="table" id="tabelahospedes">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>CPF</th>
+                            <th>RG</th>
+                            <th>Data de Nascimento</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="hospede : ${hospedes}">
+                            <td th:text="${hospede.id}"></td>
+                            <td th:text="${hospede.nome}"></td>
+                            <td th:text="${hospede.telefone}"></td>
+                            <td th:text="${hospede.rg}"></td>
+                            <td th:text="${hospede.cpf}"></td>
+                            <td th:text="${hospede.dataNascimento}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Adicionando scripts do Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+    // Função para limpar todos os campos do formulário
+    function limparCamposFormulario() {
+        const formulario = document.getElementById('formulariohospede');
+        formulario.reset(); // Limpa todos os campos do formulário
+
+        // Limpa manualmente os campos ocultos, se necessário
+        formulario.querySelectorAll('input[type="hidden"]').forEach(input => {
+            input.value = '';
+        });
+
+        // Remove a classe 'selected' de qualquer linha selecionada
+        document.querySelectorAll('tr.selected').forEach(row => {
+            row.classList.remove('selected');
+        });
+    }
+
+    // Adiciona um evento de clique ao botão "Limpar Campos"
+    const botaoLimparCampos = document.querySelector('.clean-field');
+    botaoLimparCampos.addEventListener('click', limparCamposFormulario);
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+       //Funcionalidade de filtragem por id
+       const idHospedeFiltroInput = document.getElementById('idHospedeFiltro');
+
+       document.getElementById('filtroButton').addEventListener('click', function() {
+           const filtroId = idHospedeFiltroInput.value.trim();
+           let url = filtroId ? `/resort/hospede/${filtroId}/filtro` : `/resort/hospede`;
+           window.location.href = url;
+       });
+    });
+</script>
+<script>
+    document.getElementById('tabelahospedes').addEventListener('click', function(event) {
+        const linha = event.target.closest('tr');
+        if (!linha || linha.parentElement.tagName !== 'TBODY') return;
+
+        const celulas = linha.querySelectorAll('td');
+
+        if (celulas.length < 6) return;
+
+        const [id, nome, telefone, cpf, rg, dataNascimento] = celulas;
+
+        document.getElementById('id').value = id.textContent.trim();
+        document.getElementById('nome').value = nome.textContent.trim();
+        document.getElementById('telefone').value = telefone.textContent.trim()
+        document.getElementById('cpf').value = cpf.textContent.trim();
+        document.getElementById('rg').value = rg.textContent.trim();
+        document.getElementById('dataNascimento').value = dataNascimento.textContent.trim()
+        document.querySelectorAll('tr').forEach(row => row.classList.remove('selected'));
+        linha.classList.add('selected');
+    });
+</script>
+<script>
+    // Existing code for table click event listener...
+
+    // Add click event listener for the "Excluir" button
+    const deleteButton = document.querySelector('.btn-danger');
+    deleteButton.addEventListener('click', function() {
+      const id = document.getElementById('id').value;
+
+      if (id) {  // Check if an ID is selected
+        fetch(`/resort/hospede/${id}`, {  // Use the DELETE endpoint with the ID
+          method: 'DELETE'
+        })
+        .then(response => {
+          if (response.ok) { // Check for successful deletion (204 No Content)
+            // Update UI to reflect the deletion (e.g., remove the selected row)
+            const selectedRow = document.querySelector('.selected');
+            if (selectedRow) {
+              selectedRow.parentNode.removeChild(selectedRow);
+            }
+            console.log('hospede excluído com sucesso!');
+          } else {
+            console.error('Erro ao excluir hospede!');
+          }
+        })
+        .catch(error => {
+          console.error('Erro na requisição:', error);
+        });
+      } else {
+        console.error('Selecione um hospede para excluir!');
+      }
+    });
+</script>
+</body>
+</html>
