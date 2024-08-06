@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record QuartoUpdateDto(
+        @NotNull(message="Id de quarto não foi repassado")
         Integer id,
 
         @NotNull(message = "Nome não pode ser nulo")

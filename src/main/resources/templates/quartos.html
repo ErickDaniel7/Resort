@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
 
 <head>
     <title>Cadastro de Quartos</title>
@@ -10,37 +10,34 @@
 </head>
 
 <body style="background-color:light">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">RESORT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+    <nav class="navbar navbar-expand-lg navbar-light  bg-light ">
+        <a class="navbar-brand" href="#">CONTROLE DE QUARTOS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-      
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/resort/quarto">Quartos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/resort/hospede">Hóspedes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/resort/reserva">Reservas</a>
-            </li>
-          </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/resort/quarto">Quartos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resort/hospede">Hóspedes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resort/reserva">Reservas</a>
+                </li>
+            </ul>
         </div>
-      </nav>
+    </nav>
     <div class="main">
-        <section>
-            <div class="row ml-4 mt-4 mb-0">
-                <h3 class="ml-3">Cadastro de Quartos</h3>
-            </div>
-            <hr>
+        <section class="mt-4">
             <div class="row col-12 d-flex justify-content-end ml-1 mb-0">
                 <div class="d-flex ">
                     <div class="form-group mr-2">
                         <label for="statusFiltro" class="sr-only">Status</label>
-                        <select id="statusFiltro" class="form-control" style="height: 41px;">
+                        <select id="statusFiltro" class="form-control" style="height:35px">
                             <option value="todos">Status</option>
                             <option value="disponivel">Disponível</option>
                             <option value="ocupado">Ocupado</option>
@@ -49,74 +46,82 @@
                     <div class="form-group mr-2">
                         <label for="quantidadeQuartos" class="sr-only">Quantidade de Quartos</label>
                         <input type="number" id="quantidadeQuartos" name="quantidadeQuartos" class="form-control"
-                            placeholder="Quantidade de Quartos" style="height: 41px;">
+                            placeholder="Quantidade de Quartos" style="height:35px">
                     </div>
                     <div class="form-group mr-2">
                         <label for="vistaFiltro" class="sr-only">Vista</label>
-                        <select id="vistaFiltro" class="form-control" style="height: 41px;">
+                        <select id="vistaFiltro" class="form-control" style="height:35px">
                             <option value="todos">Vista</option>
                             <option value="vistaMar">Vista para o Mar</option>
                             <option value="semVistaMar">Sem Vista para o Mar</option>
                         </select>
                     </div>
-                    <button class="btn btn-secondary mr-4" style="height: 41px;" id="filtroButton">Filtrar</button>
+                    <button class="btn btn-secondary mr-4" style="height:35px" id="filtroButton">Filtrar</button>
                 </div>
 
             </div>
             <div class="row mt-0 ml-4 mr-4">
                 <div class="col-lg-3 col-md-12 mt-2">
-                    <div class="card p-4 ">
-                        <form id="formularioQuarto" method="post">
+                    <div class="card p-4">
+                        <form id="formularioQuarto" class="formulario">
                             <input type="hidden" id="id" name="id" class="form-control">
 
                             <div class="form-group">
                                 <label for="nome" class="label__input">Nome:</label>
-                                <input type="text" id="nome" name="nome" class="form-control" aria-describedby="nome">
-                            </div>
+                                <input type="text" id="nome" name="nome" class="form-control mt-0"
+                                    aria-describedby="nome">
 
-                            <div class="form-group">
+
+
                                 <label for="nome" class="label__input">Descrição:</label>
-                                <input type="text" id="descricao" name="descricao" class="form-control"
+                                <input type="text" id="descricao" name="descricao" class="form-control mt-0"
                                     aria-describedby="descricao">
-                            </div>
 
-                            <div class="form-group">
+
+
                                 <label for="valorDia" class="label__input">Diária:</label>
-                                <input type="text" id="valorDia" name="valorDia" class="form-control"
-                                    aria-describedby="valor">
-                            </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">R$</span>
+                                    </div>
+                                    <input type="text" id="valorDia" name="valorDia" class="form-control"
+                                        aria-describedby="valor">
+                                </div>
 
-                            <div class="form-group">
+
+
                                 <label for="capacidade" class="label__input">Capacidade:</label>
                                 <input type="number" id="capacidade" name="capacidade" class="form-control"
                                     aria-describedby="capacidade">
+
                             </div>
 
                             <div class="form-group form-check">
                                 <input type="checkbox" class="form-check-input" id="vistaMar" name="vistaMar">
                                 <label class="form-check-label" for="vistaMar">Vista Pro Mar</label>
                             </div>
-
-                            <hr />
-                            <div class="form-group">
-                                <button type="button" class="btn btn-primary w-100 mb-1 salvar">Salvar</button>
-                                <button type="button" class="btn btn-danger w-100 excluir">Excluir</button>
-                                <button type="button" class="btn btn-secondary w-100 mt-1 clean-field">Limpar
-                                    Campos</button>
-                            </div>
                         </form>
+
+                        <div class="mb-autod-flex flex-column justify-content-end"
+                            style="position: relative; bottom:0;top:35px">
+                            <hr>
+                            <button type="button" class="btn btn-primary w-100 mb-1 salvarButton">Salvar</button>
+                            <button type="button" class="btn btn-danger w-100 excluir">Excluir</button>
+                            <button type="button" class="btn btn-secondary w-100 mt-1 clean-field">Limpar
+                                Campos</button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-12 mt-2">
-                    <div class="card p-4" style="height: 600px; overflow-y: auto;">
+                    <div class="card p-4" >
                         <table class="table" id="tabelaQuartos">
                             <thead class="thead-light">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nome</th>
                                     <th>Descrição</th>
-                                    <th>Vista pro mar</th>
-                                    <th>Valor Diária</th>
+                                    <th>V.Mar</th>
+                                    <th>V.Diária</th>
                                     <th>Capacidade</th>
                                     <th>Status</th>
                                 </tr>
@@ -127,7 +132,7 @@
                                     <td th:text="${quarto.nome}"></td>
                                     <td th:text="${quarto.descricao}"></td>
                                     <td th:text="${quarto.vistaMar ? 'Sim' : 'Não'}"></td>
-                                    <td th:text="${quarto.valorDia}"></td>
+                                    <td th:text="${#numbers.formatCurrency(quarto.valorDia)}"></td>
                                     <td th:text="${quarto.capacidade}"></td>
                                     <td th:text="${quarto.status == 'DISPONIVEL' ? 'DISPONÍVEL' : quarto.status}"></td>
                                 </tr>
@@ -139,183 +144,36 @@
         </section>
     </div>
 
+    <!--Modal de exibição de erro-->
+    <!-- Modal de Erro -->
+    <div class="modal fade" id="erroModal" tabindex="-1" role="dialog" aria-labelledby="erroModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="erroModalLabel">Erro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="erroModalMensagem">
+                    <!-- Mensagem de erro será inserida aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Adicionando scripts do Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('tabelaQuartos').addEventListener('click', function (event) {
-            const linha = event.target.closest('tr');
-            if (!linha || linha.parentElement.tagName !== 'TBODY') return;
-
-            const celulas = linha.querySelectorAll('td');
-
-            if (celulas.length < 6) return;
-
-            const [id, nome, descricao, vistaMar, valorDia, capacidade, status] = celulas;
-
-            document.getElementById('id').value = id.textContent.trim();
-            document.getElementById('nome').value = nome.textContent.trim();
-            document.getElementById('descricao').value = descricao.textContent.trim();
-            const valorDiaria = parseFloat(valorDia.textContent.trim());
-            //const valorDiaria = parseFloat(valorDia.textContent.trim().replace('R$', '').replace('.', '').replace(',', '.'));
-
-            const vistaMarValue = vistaMar.textContent.trim().toLowerCase() === 'sim';
-            document.getElementById('valorDia').value = vistaMarValue ? (valorDiaria / 2).toFixed(2) : valorDiaria.toFixed(2);
-            document.getElementById('capacidade').value = capacidade.textContent.trim();
-            document.getElementById('vistaMar').checked = vistaMarValue;
-            document.querySelectorAll('tr').forEach(row => row.classList.remove('selected'));
-            linha.classList.add('selected');
-        });
-    </script>
-    <script>
-
-        // Função para limpar todos os campos do formulário
-        function limparCamposFormulario() {
-            const formulario = document.getElementById('formularioQuarto');
-            formulario.reset(); // Limpa todos os campos do formulário
-
-            // Limpa manualmente os campos ocultos, se necessário
-            formulario.querySelectorAll('input[type="hidden"]').forEach(input => {
-                input.value = '';
-            });
-
-            // Remove a classe 'selected' de qualquer linha selecionada
-            document.querySelectorAll('tr.selected').forEach(row => {
-                row.classList.remove('selected');
-            });
-        }
-
-        // Adiciona um evento de clique ao botão "Limpar Campos"
-        const botaoLimparCampos = document.querySelector('.clean-field');
-        botaoLimparCampos.addEventListener('click', limparCamposFormulario);
-
-
-        const salvarButton = document.querySelector('.salvar');
-        salvarButton.addEventListener('click', function () {
-            const formulario = document.getElementById('formularioQuarto');
-            const formData = new FormData(formulario);
-
-            fetch('/resort/quarto', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        console.log(response)
-                        alert('Erro ao salvar quarto');
-                    }
-                })
-                .then(data => {
-                    // Atualizar a tabela com os novos dados
-                    const tabelaQuartos = document.getElementById('tabelaQuartos').getElementsByTagName('tbody')[0];
-                    tabelaQuartos.innerHTML = '';
-
-                    data.forEach(quarto => {
-                        const newRow = tabelaQuartos.insertRow();
-
-                        newRow.innerHTML = `
-                        <td>${quarto.id}</td>
-                        <td>${quarto.nome}</td>
-                        <td>${quarto.descricao}</td>
-                        <td>${quarto.vistaMar ? 'Sim' : 'Não'}</td>
-                        <td>${quarto.valorDia}</td>
-                        <td>${quarto.capacidade}</td>
-                        <td>${quarto.status == 'DISPONIVEL' ? 'DISPONÍVEL' : quarto.status}</td>
-                    `;
-                    });
-                })
-        }
-        )
-
-
-        // Add click event listener for the "Excluir" button
-        const deleteButton = document.querySelector('.btn-danger');
-        deleteButton.addEventListener('click', function () {
-            const id = document.getElementById('id').value;
-
-            if (id) {  // Check if an ID is selected
-                fetch(`/resort/quarto/${id}`, {  // Use the DELETE endpoint with the ID
-                    method: 'DELETE'
-                })
-                    .then(response => {
-                        if (response.ok) { // Check for successful deletion (204 No Content)
-                            // Update UI to reflect the deletion (e.g., remove the selected row)
-                            const selectedRow = document.querySelector('.selected');
-                            if (selectedRow) {
-                                selectedRow.parentNode.removeChild(selectedRow);
-                            }
-                            console.log('Quarto excluído com sucesso!');
-                        } else {
-                            console.error('Erro ao excluir quarto!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro na requisição:', error);
-                    });
-            } else {
-                console.error('Selecione um quarto para excluir!');
-            }
-        });
-    </script>
-    <script>
-        //Funcionalidade de filtros multiplos:
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('filtroButton').addEventListener('click', function () {
-                const statusFiltro = document.getElementById('statusFiltro').value;
-                const quantidadeQuartos = document.getElementById('quantidadeQuartos').value;
-                const vistaFiltro = document.getElementById('vistaFiltro').value;
-                let vista = null;
-                if (vistaFiltro == 'vistaMar') vista = true;
-                if (vistaFiltro == 'semVistaMar') vista = false;
-                const filtroData = {
-                    status: statusFiltro !== 'todos' ? statusFiltro : null,
-                    quantidadeQuartos: quantidadeQuartos ? parseInt(quantidadeQuartos) : null,
-                    vistaMar: vista,
-                };
-
-                fetch('/resort/quarto/filtro', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(filtroData)
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
-                            throw new Error('Erro na filtragem dos dados');
-                        }
-                    })
-                    .then(data => {
-                        // Limpar a tabela antes de adicionar os novos dados
-                        const tabelaQuartos = document.getElementById('tabelaQuartos').getElementsByTagName('tbody')[0];
-                        tabelaQuartos.innerHTML = '';
-
-                        // Adicionar os novos dados à tabela
-                        data.forEach(quarto => {
-                            const newRow = tabelaQuartos.insertRow();
-
-                            newRow.innerHTML = `
-                    <td>${quarto.id}</td>
-                    <td>${quarto.nome}</td>
-                    <td>${quarto.descricao}</td>
-                    <td>${quarto.vistaMar ? 'Sim' : 'Não'}</td>
-                    <td>${quarto.valorDia}</td>
-                    <td>${quarto.capacidade}</td>
-                    <td>${quarto.status == 'DISPONIVEL' ? 'DISPONÍVEL' : quarto.status}</td>
-                `;
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/backend.js"></script>
+    <script src="/js/frontend_quarto.js"></script>
 </body>
 
 </html>

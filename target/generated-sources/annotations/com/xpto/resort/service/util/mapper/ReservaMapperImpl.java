@@ -1,17 +1,16 @@
 package com.xpto.resort.service.util.mapper;
 
-import com.xpto.resort.model.Hospede;
-import com.xpto.resort.model.Quarto;
 import com.xpto.resort.model.Reserva;
 import com.xpto.resort.model.StatusReserva;
 import com.xpto.resort.service.dto.reserva.ReservaInput;
 import com.xpto.resort.service.dto.reserva.ReservaResponse;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-24T17:12:45-0300",
+    date = "2024-06-29T19:09:26-0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
 )
 public class ReservaMapperImpl implements ReservaMapper {
@@ -38,20 +37,24 @@ public class ReservaMapperImpl implements ReservaMapper {
         }
 
         Integer id = null;
-        Hospede hospede = null;
-        Quarto quarto = null;
         LocalDate dataEntrada = null;
         LocalDate dataSaida = null;
         String status = null;
+        BigDecimal valorTotal = null;
 
         id = reserva.getId();
-        hospede = reserva.getHospede();
-        quarto = reserva.getQuarto();
         dataEntrada = reserva.getDataEntrada();
         dataSaida = reserva.getDataSaida();
         status = statusAsString( reserva.getStatus() );
+        valorTotal = reserva.getValorTotal();
 
-        ReservaResponse reservaResponse = new ReservaResponse( id, hospede, quarto, dataEntrada, dataSaida, status );
+        Integer idQuarto = null;
+        String nomeQuarto = null;
+        Integer idHospede = null;
+        String nomeHospede = null;
+        String cpfHospede = null;
+
+        ReservaResponse reservaResponse = new ReservaResponse( id, idQuarto, nomeQuarto, idHospede, nomeHospede, cpfHospede, dataEntrada, dataSaida, status, valorTotal );
 
         return reservaResponse;
     }

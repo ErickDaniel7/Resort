@@ -26,7 +26,8 @@ public class Quarto {
     @Column(nullable = false, name = "qtd_max_ocupantes")
     private Integer capacidade;
 
-    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "status")
     private StatusQuarto status = StatusQuarto.DISPONIVEL;
     // Getters and setters omitted for brevity
 

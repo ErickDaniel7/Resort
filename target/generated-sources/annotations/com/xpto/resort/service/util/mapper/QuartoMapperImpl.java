@@ -2,6 +2,7 @@ package com.xpto.resort.service.util.mapper;
 
 import com.xpto.resort.model.Quarto;
 import com.xpto.resort.model.StatusQuarto;
+import com.xpto.resort.service.dto.quarto.QuartoCreateDto;
 import com.xpto.resort.service.dto.quarto.QuartoResponseDto;
 import com.xpto.resort.service.dto.quarto.QuartoUpdateDto;
 import java.math.BigDecimal;
@@ -9,10 +10,27 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-24T14:14:24-0300",
+    date = "2024-06-29T19:09:26-0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
 )
 public class QuartoMapperImpl implements QuartoMapper {
+
+    @Override
+    public Quarto toCreateEntity(QuartoCreateDto quartoCreateDto) {
+        if ( quartoCreateDto == null ) {
+            return null;
+        }
+
+        Quarto quarto = new Quarto();
+
+        quarto.setNome( quartoCreateDto.nome() );
+        quarto.setVistaMar( quartoCreateDto.vistaMar() );
+        quarto.setValorDia( quartoCreateDto.valorDia() );
+        quarto.setCapacidade( quartoCreateDto.capacidade() );
+        quarto.setDescricao( quartoCreateDto.descricao() );
+
+        return quarto;
+    }
 
     @Override
     public Quarto toEntity(QuartoUpdateDto quartoUpdateDto) {

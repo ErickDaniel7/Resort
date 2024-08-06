@@ -45,12 +45,12 @@ public class ReservaService {
 
         return reservas
                 .stream()
-                .map(e -> ReservaMapper.instance.toDto(e))
+                .map(e -> new ReservaResponse(e))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void save(ReservaInput reservaInput) {
+    public ReservaResponse save(ReservaInput reservaInput) {
         Optional<Quarto> quartoOptional = quartoRepository.findById(reservaInput.idQuarto());
         Optional<Hospede> hospedeOptional = hospedeRepository.findById(reservaInput.idHospede());
 
@@ -78,8 +78,9 @@ public class ReservaService {
                     throw new ResourceNotFoundException("Reserva não encontrada!");
                 }
             }
-            reservaRepository.save(reserva);
+            return new ReservaResponse(reservaRepository.save(reserva));
         }
+        throw new RegraDeNegocioException("Não é possível salvar a reserva. Já existe uma reserva para o mesmo quarto no período especificado.");
     }
 
     private void validarIntervaloReserva(LocalDate dataEntrada, LocalDate dataSaida) {
@@ -91,19 +92,11 @@ public class ReservaService {
 
     public ReservaResponse findById(Integer id){
         Optional<Reserva> optionalReserva = reservaRepository.findById(id);
-
-        System.out.println(optionalReserva.get());
         if (optionalReserva.isEmpty()){
             throw new ResourceNotFoundException("Reserva não encontrada!");
         }
         Reserva reserva = optionalReserva.get();
-        return new ReservaResponse(
-                reserva.getId(),
-                reserva.getHospede(),
-                reserva.getQuarto(),
-                reserva.getDataEntrada(),
-                reserva.getDataSaida(),
-                reserva.getStatus().toString());
+        return new ReservaResponse(reserva);
 
     }
 
@@ -151,20 +144,26 @@ public class ReservaService {
         Optional<Reserva> reservaOptional = reservaRepository.findById(id);
         List<ReservaResponse> reservasFiltradas = new ArrayList<>();
         if (reservaOptional.isPresent()) {
-            reservasFiltradas.add(ReservaMapper.instance.toDto(reservaOptional.get()));
+            Reserva reserva = reservaOptional.get();
+            Hospede hospede = reserva.getHospede();
+            Quarto quarto = reserva.getQuarto();
+            reserva.setQuarto(quarto);
+            reserva.setHospede(hospede);
+            ReservaResponse responseRecord =  new ReservaResponse(reserva);
+            reservasFiltradas.add(responseRecord);
         }
         return reservasFiltradas;
     }
 
     public List<ReservaResponse> filtrarReservaPorHospede(String hospede) {
         List<Reserva> reservas = reservaRepository.findByHospedeNomeContaining(hospede);
-        List<ReservaResponse> reservasFiltradas = reservas.stream().map(e -> ReservaMapper.instance.toDto(e)).toList();
+        List<ReservaResponse> reservasFiltradas = reservas.stream().map(e -> new ReservaResponse(e)).toList();
         return reservasFiltradas;
     }
 
     public List<ReservaResponse> filtrarReservaPorCheckin(LocalDate dataInicio) {
         List<Reserva> reservas = reservaRepository.findByDataEntrada(dataInicio);
-        List<ReservaResponse> reservasFiltradas = reservas.stream().map(e -> ReservaMapper.instance.toDto(e)).toList();
+        List<ReservaResponse> reservasFiltradas = reservas.stream().map(e -> new ReservaResponse(e)).toList();
         return reservasFiltradas;
     }
 

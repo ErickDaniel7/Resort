@@ -8,12 +8,17 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface QuartoRepository extends QuartoRepositoryCustom , JpaRepository<Quarto,Integer>    {
+
     @Query("SELECT q FROM Quarto q WHERE q.id NOT IN (" +
             "SELECT r.quarto.id FROM Reserva r " +
-            "WHERE (r.dataEntrada < :dataSaida AND r.dataSaida > :dataEntrada) " +
+            "WHERE (:dataEntrada BETWEEN r.dataEntrada AND r.dataSaida " +
+            "OR :dataSaida BETWEEN r.dataEntrada AND r.dataSaida " +
+            "OR r.dataEntrada BETWEEN :dataEntrada AND :dataSaida " +
+            "OR r.dataSaida BETWEEN :dataEntrada AND :dataSaida) " +
             "AND (r.status = 'ABERTO' OR r.status = 'PENDENTE'))")
     List<Quarto> findAvailableRooms(@Param("dataEntrada") LocalDate dataEntrada,
                                     @Param("dataSaida") LocalDate dataSaida);
@@ -28,4 +33,6 @@ public interface QuartoRepository extends QuartoRepositoryCustom , JpaRepository
             @Param("dataSaida") LocalDate dataSaida,
             @Param("vistaMar") Boolean vistaMar,
             @Param("quantidadeQuartos") Integer quantidadeQuartos);
+
+    Optional<Quarto> findByNome(String nome);
 }

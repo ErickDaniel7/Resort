@@ -1,27 +1,28 @@
+-- Create enum for status
+CREATE TYPE status_reserva AS ENUM ('PENDENTE', 'ABERTO', 'FECHADO');
+
+CREATE TYPE status_quarto AS ENUM ('DISPONIVEL', 'OCUPADO');
+
 CREATE TABLE hospede (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
   telefone VARCHAR(255) NOT NULL,
-  cpf VARCHAR(255) NOT NULL UNIQUE, -- Added UNIQUE constraint
-  rg VARCHAR(255) NOT NULL UNIQUE, -- Added UNIQUE constraint
+  cpf VARCHAR(11) NOT NULL UNIQUE,
+  rg VARCHAR(11) NOT NULL UNIQUE,
   data_nascimento DATE NOT NULL
 );
 
 
-CREATE TYPE status_quarto AS ENUM ('DISPONIVEL', 'OCUPADO', 'IMPEDIDO');
-
 CREATE TABLE quarto (
   id SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL UNIQUE,  -- Unique name for the room
+  nome VARCHAR(255) NOT NULL UNIQUE,
   vista_mar BOOLEAN NOT NULL,
-  valor_dia NUMERIC(10,2) NOT NULL,  -- Daily rate with precision
+  valor_dia NUMERIC(10,2) NOT NULL,
   qtd_max_ocupantes INTEGER NOT NULL,
-  status status_quarto  -- Reference to status enum (created separately)
+  status status_quarto NOT NULL DEFAULT 'DISPONIVEL' ,
   descricao VARCHAR(100)
 );
 
--- Create enum for status
-CREATE TYPE status_reserva AS ENUM ('PENDENTE', 'ABERTO', 'FECHADO');
 
 CREATE TABLE reserva (
   id SERIAL PRIMARY KEY,
@@ -32,5 +33,3 @@ CREATE TABLE reserva (
   fk_hospede_id INTEGER NOT NULL REFERENCES hospede(id),
   fk_quarto_id INTEGER NOT NULL REFERENCES quarto(id)
 );
-
-

@@ -29,8 +29,26 @@ public class ErrorHandler {
         return ResponseEntity.badRequest().body(new DadosErros(erro));
     }
 
+    @ExceptionHandler(ForeignKeyConstraintViolationException.class)
+    public ResponseEntity tratarChaveEstrangeira(ForeignKeyConstraintViolationException ex){
+        var erro = ex.getMessage();
+        return ResponseEntity.badRequest().body(new DadosErros(erro));
+    }
+
+    @ExceptionHandler(NotNullConstraintViolationException.class)
+    public ResponseEntity tratarInsercaoNotNull(NotNullConstraintViolationException ex){
+        var erro = ex.getMessage();
+        return ResponseEntity.badRequest().body(new DadosErros(erro));
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity notFound(ResourceNotFoundException ex) {
+        var erro = ex.getMessage();
+        return ResponseEntity.badRequest().body(new DadosErros(erro));
+    }
+
+    @ExceptionHandler(UniqueConstraintViolationException.class)
+    public ResponseEntity tratarDuplicacaoDeChaveUnica(UniqueConstraintViolationException ex) {
         var erro = ex.getMessage();
         return ResponseEntity.badRequest().body(new DadosErros(erro));
     }
